@@ -1,16 +1,25 @@
 <template>
 	<div class="day-event" :style="getEventBackgroundColor">
-		<div>
+		<div v-if="!event.edit">
 			<span class="has-text-centered details">{{ event.details }}</span>
 			<div class="has-text-centered icons">
-				<i class="fa fa-pencil-square edit-icon"></i>
-				<i class="fa fa-trash-o delete-icon"></i>
+				<font-awesome-icon icon="edit" @click="editEvent(day.id, event.details)"></font-awesome-icon>
+				<font-awesome-icon icon="trash"></font-awesome-icon>
+			</div>
+		</div>
+
+		<div v-if="event.edit">
+			<input type="text" :placeholder="event.details" />
+			<div class="has-text-centered icons">
+				<font-awesome-icon icon="check"></font-awesome-icon>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import store from '../store.js';
+
 export default {
 	name: 'CalendarEvent',
 	props: ['day', 'event'],
@@ -19,6 +28,11 @@ export default {
 			const colors = ['#FF9999', '#85D6FF', '#99FF99'];
 			let randomColor = colors[Math.floor(Math.random() * colors.length)];
 			return `background-color: ${randomColor}`;
+		}
+	},
+	methods: {
+		editEvent(dayId, eventDetails) {
+			store.editEvent(dayId, eventDetails);
 		}
 	}
 }
@@ -48,3 +62,6 @@ export default {
 	}
 }
 </style>
+
+// <font-awesome-icon icon="edit"></font-awesome-icon>
+// <font-awesome-icon icon="trash"></font-awesome-icon>
